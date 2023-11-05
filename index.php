@@ -9,7 +9,7 @@ include'bubbles.php';
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vetinary Appointment</title>
+    <title>Vetinary Appointment Systems</title>
 <style>
             .container
             {
@@ -142,7 +142,6 @@ include'bubbles.php';
                 <p>
                     Bibhushan Jung Sijapati
                 </p>
-
             </p>
             <p class="t2">We are here to <br> help you.</p>
         </div>
