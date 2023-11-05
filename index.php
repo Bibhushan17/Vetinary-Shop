@@ -139,10 +139,9 @@ include'bubbles.php';
     <div class="container">
         <div class="text">
             <p class="t1">
-                MOMO KHANE<br>
-                Hello PAndey Ji!!!<br><br>
-                Hello PAndey Ji!!!<br><br>
-                Hello PAndey Ji!!!<br><br>
+                <p>
+                    Bibhushan Jung Sijapati
+                </p>
 
             </p>
             <p class="t2">We are here to <br> help you.</p>
