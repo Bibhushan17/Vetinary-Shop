@@ -9,7 +9,7 @@ include'bubbles.php';
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laundry Mart</title>
+    <title>Vetinary Appointment</title>
 <style>
             .container
             {
@@ -139,8 +139,11 @@ include'bubbles.php';
     <div class="container">
         <div class="text">
             <p class="t1">
-                Busy Schedule?<br>
-                No time for Laundry!!!<br><br>
+                MOMO KHANE<br>
+                Hello PAndey Ji!!!<br><br>
+                Hello PAndey Ji!!!<br><br>
+                Hello PAndey Ji!!!<br><br>
+
             </p>
             <p class="t2">We are here to <br> help you.</p>
         </div>
