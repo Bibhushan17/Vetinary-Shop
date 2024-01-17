@@ -8,8 +8,8 @@
 <style>
 /* Style for the footer */
 .footer {
-    background-color: #0F2C59;
-    color:  goldenrod;
+    background-color: #381D2A;
+    color:  #BA5624;
     text-align: center;
     padding: 10px 0;
     position: fixed;
@@ -20,7 +20,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50px; /* Adjust the height as needed */
+    height: 40px; /* Adjust the height as needed */
 }
 
 /* Style for the copyright text */
@@ -32,7 +32,7 @@
 </style>
 <body>
 <div class="footer">
-    <p class="copyright">&copy; 2023 Bibhushan Jung Sijapati</p>
+    <p class="copyright">&copy; Privacy Policy | Accessibility | © Copyright 2023 - Sangam Veterinary Clinic. </p>
 </div>
 <script>
     window.addEventListener('scroll', function() {

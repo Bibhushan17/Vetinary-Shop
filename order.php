@@ -1,139 +1,211 @@
 <?php
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
 
-include ('nav.php');
-include ('db.php');
-$username=$_SESSION['username'];
-$email=$_SESSION['email'];
-$phone=$_SESSION['phone'];
-echo $username;
-if(!isset($_SESSION['loggedin'])|| $_SESSION['loggedin']!==true)
-{
-    header("Location:login.php");
-   }
+include('nav.php');
+include('db.php');
+
+$username = $_SESSION['username'];
+$email = $_SESSION['email'];
+$phone = $_SESSION['phone'];
+
+$errors = []; // Initialize errors array
+
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("Location: login.php");
+}
+
 // Handle form submission
-if (isset($_POST['submit'])) 
-{
-    echo "hello inside ";
-    // echo "Hello world";
-    // echo "Welcome";
-    // Get the selected item and calculate the price based on the weight
+if (isset($_POST['submit'])) {
     $selectedItem = $_POST['item'];
-    
-    $weight = $_POST['weight'];
-    $totalPrice=$_POST['hidden-total-price'];
-    $name=$_POST['fullname'];
-    $address=$_POST['address'];
-    $phone=$_POST['phone'];
-    $pickupdate=$_POST['pickup-date'];
-    $pickuptime=$_POST['pickup-time'];
-    $deliverydate=$_POST['delivery-date'];
-    $deliverytime=$_POST['delivery-time'];
+    $Number = $_POST['Number'];
+    $totalPrice = $_POST['hidden-total-price'];
+    $name = $_POST['fullname'];
+    $address = $_POST['address'];
+    $phone = $_POST['phone'];
+    $pickupdate = $_POST['pickup-date'];
+    $pickuptime = $_POST['pickup-time'];
+    $PetName = $_POST['PetName'];
+    $Species = $_POST['Species'];
 
-       echo $selectedItem." ".$weight." ".$totalPrice." ".$name." ".$address." ".$phone." ".$pickupdate." ".$pickuptime." ".$deliverydate." ".$deliverytime;
- 
-    // echo "Hello world";
-   if(isset($_POST['hidden-total-price']))
-   {
-       $tp=$_POST['hidden-total-price'];
-      header("Location: invoice.php?item=$item&quantity=$quantity&weight=$weight&total_price=$tp"); 
-   }
-   else{
-    header("Location: ".$_SERVER['PHP_SELF']);  
-   }
-    
-    // Store the order details and total price in the database
-    $item = mysqli_real_escape_string($conn, $selectedItem);
-    $quantity = 1; // Assuming quantity is always 1
-    $weight = mysqli_real_escape_string($conn, $weight);
-    $totalPrice = mysqli_real_escape_string($conn, $totalPrice);
+    // Function to validate time
+    function validateTime($time)
+    {
+        return strtotime($time) >= strtotime('11:00') && strtotime($time) <= strtotime('16:00');
+    }
+    function validateAlphabetic($input, $max_length)
+    {
+        return preg_match('/^[a-zA-Z]+$/', $input) && strlen($input) <= $max_length;
+    }
+        
 
-    $insertQuery ="INSERT INTO order_new(Name, Address,Phone,SelectedItem,Weight,TotalPrice,PickupDate,PickupTime,DeliveryDate,DeliveryTime) VALUES('$name','$address','$phone','$selectedItem','$weight','$totalPrice','$pickupdate','$pickuptime','$deliverydate','$deliverytime')";
-    $result= mysqli_query($conn, $insertQuery);
-    // var_dump($result);
-    if ($result) {
-       
-        echo "data added successfully"; // Redirect to success page
-        // exit();
-    } else {
-        // Query execution failed
-        echo "Error: " . mysqli_error($conn);
+    // Function to validate alphanumeric input with a maximum length
+   
+    // Validate required fields
+    $requiredFields = ['item', 'Number', 'hidden-total-price', 'fullname', 'address', 'phone', 'pickup-date', 'pickup-time', 'PetName', 'Species'];
+    foreach ($requiredFields as $field) {
+        if (empty($_POST[$field])) {
+            $errors[] = "The {$field} field is required.";
+        }
     }
 
-    // Redirect to the invoice page with the order details and total price
-    header("Location: invoice.php?Name=$name&item=$selectedItem&quantity=$quantity&weight=$weight&total_price=$totalPrice&name=$name&address=$address&pickup_time=$pickuptime&pickup_date=$pickupdate&Email=$email&Phone=$phone");
+    // Validate selected item
+    $validItems = ['2000', '1500', '1200', '1000', '3500', '3200', '3000', '2700', '2500', '2200'];
+    if (!in_array($selectedItem, $validItems)) {
+        $errors[] = "Invalid selected item.";
+    }
+
+    // Validate number of pets
+    if (!is_numeric($Number) || $Number < 1 || $Number > 2 || !preg_match('/^[1-2]$/', $Number)) {
+        $errors[] = "Invalid number. You can only choose 1 or 2 pets.";
+    }
+
+    if (!validateAlphabetic($PetName, 50)) {
+        $errors[] = "Pet Name should contain only alphabetic characters and have a maximum length of 50 characters.";
+    }
+    
+    // Validate species name
+    if (!validateAlphabetic($Species, 50)) {
+        $errors[] = "Species Name should contain only alphabetic characters and have a maximum length of 50 characters.";
+    }
+
+
+
+    // Validate appointment date
+    $currentDate = date('Y-m-d');
+    $pickupDateObj = DateTime::createFromFormat('Y-m-d', $pickupdate);
+    if (!$pickupDateObj || $pickupDateObj < new DateTime($currentDate) || $pickupDateObj > (new DateTime($currentDate))->modify('+3 days')) {
+        $errors[] = "Please choose a date between tomorrow and the next 3 days.";
+    }
+
+    // Validate appointment time
+    if (!validateTime($pickuptime)) {
+        $errors[] = "Appointment time must be between 11 AM and 4 PM.";
+    }
+
+    // If no errors, proceed with inserting data
+    if (empty($errors)) {
+        $item = mysqli_real_escape_string($conn, $selectedItem);
+        $quantity = 1; // Assuming quantity is always 1
+        $Number = mysqli_real_escape_string($conn, $Number);
+        $totalPrice = mysqli_real_escape_string($conn, $totalPrice);
+
+        // Map item to its corresponding service
+        $services = [
+            '2000' => 'Wellness Exam',
+            '1500' => 'Dental Care',
+            '1200' => 'Dietary Consultation',
+            '1000' => 'Vaccinations',
+            '3500' => 'Wellness Exam and Dental Care',
+            '3200' => 'Wellness Exam and Dietary Consultation',
+            '3000' => 'Wellness Exam and Vaccinations',
+            '2700' => 'Dental Care and Dietary Consultation',
+            '2500' => 'Dental Care and Vaccinations',
+            '2200' => 'Dietary Consultation and Vaccinations',
+        ];
+
+        $laa = isset($services[$item]) ? $services[$item] : 'Unknown Service';
+
+        $Status = "Pending";
+        $insertQuery = "INSERT INTO appointments(Name, Address, Phone, SelectedItem, Number, TotalPrice, PickupDate, PickupTime, PetName, Species, Status) VALUES('$name','$address','$phone','$laa','$Number','$totalPrice','$pickupdate','$pickuptime','$PetName','$Species','$Status')";
+        $result = mysqli_query($conn, $insertQuery);
+        if ($result) {
+            echo "<script>alert('Appointment placed successfully.');</script>";
+            // Order placed successfully, redirect to myorder.php
+            echo "<script>window.location.href='myorder.php';</script>";
+            exit(); // Ensure that no further code is executed after the redirect
+        } else {
+            echo "<script>alert('Error: " . mysqli_error($conn) . "');</script>";
+        }
+        
+    } else {
+        // Display individual prompt box for the first error
+        echo "<script>alert('" . $errors[0] . "');</script>";
+    }
 }
-  
 ?>
+<!-- Remaining HTML code... -->
+
+
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Order - Laundry Service</title>
-    <link rel="stylesheet" href="order-style.css">
-
+    <title>Order- pet treatment services</title>
+    <!-- <link rel="stylesheet" href="order-style.css"> -->
     <style>
+      
         h1
         {
-            margin-top: 10%;
+            margin-top: 7%;
             font-size: 5vh;
         }
         
         h1.x1
         {
-            margin-top: 7%;
-            font-size: 2.5em;
+            margin-top: 5%;
+            margin-bottom: 5%;
+            font-size: 3em;
+            background-color: #3C0000;
+            color:white;
             margin-bottom: -3%;
+            font-style: arial, calibri;
+            width: 30%;
+            text-align: center;
+            margin-left: 33%;
+            border-radius: 5px;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 10px;
+            padding: 16px;
+            white-space: nowrap;
+
         }
         
         .container 
         {
             display: flex;
             justify-content: space-around;
-            align-items: flex-start;
-            margin-top: 3%;
-            margin: 3%%;
+            align-items: center;
+            margin-top: 5%;
+            margin: 3%;
             padding: 3%;
         }
 
         .left-side 
         {
             /* margin-top: 1% ; */
-            width: 40%;
+            width: 30%;
             box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            margin-left: -80%;
+            margin-top: -22%;
+
 
         }
 
         .right-side 
         {
-            width: 25%;
+            width: 40%;
+            
             box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            column-gap: 2em;
+            background-color: #f1dca7;
+            margin-left: 30%;
         }
-
-
-        /* .right-side .form-container 
-        {
-            max-width: 400px;
-            padding: 5%;
-            width: 25%;
-            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-            align-items: center;
-            justify-content: space-between;
-        } */
     
         .table-container 
         {
-            margin-top: 10%;
+            margin-top: 6%;
+            background-color: red;
+            
         }
         table 
         {
+            margin-top: -3%;
             font-size: 1.3em;
             font-family: Arial, Helvetica, sans-serif;
             /* border: 2px solid #000; */
@@ -144,6 +216,7 @@ if (isset($_POST['submit']))
         {
             text-align: center;
             font-family: arial, calibri, sans-serif;
+
         }
 
         th 
@@ -151,7 +224,7 @@ if (isset($_POST['submit']))
             background-color: #f2f2f2;
             font-weight: lighter;
             font-size: 1.5em;
-            padding: 1vh;
+            padding: 10px;
         }
 
        
@@ -160,8 +233,9 @@ if (isset($_POST['submit']))
             text-align: center;
             font-family: arial, calibri, sans-serif;
             font-style: light;
-            padding: 1%;
+            /* padding: 5px; */
             line-height: 5vh;
+            background-color: #ffe5ec;
             
         }
 
@@ -177,8 +251,9 @@ if (isset($_POST['submit']))
             /* font-size: 3em; */
             font-weight: lighter;
             margin-bottom: -7%;
-            margin-top:2% ;
-            
+            background-color: #ffe5ec;
+            padding: 10px;;
+            font-family: Arial, Helvetica, calibri;
         }
         .right-side h2
         {
@@ -196,82 +271,59 @@ if (isset($_POST['submit']))
         {
             display: block;
             margin-top: 2%;
+            
         }
 
         input[type="number"],
         select
         {
             margin-bottom: 5%;
-            padding: 10px;
+            padding: 5px;
+            height: 40px;
             width: 100%;   
             /* text field width size change */
             align-items: center;
         }
 
-        textarea
+        input[type="text"]
         {
             margin-bottom: 5%;
-            padding: 10px;
-            /* gap: 1.3em; */
-            width: 50%;
-            height: 50px;
-            text-align: center;
-            justify-content: center;
+            padding: 5px;
+            height: 40px;
+            width: 100%;   
+            /* text field width size change */
+            align-items: center;
         }
-
+        input[type="submit"]
+        {
+            margin-bottom: 30px;
+            padding: 5px;
+            height: 40px;
+            width: 100%;   
+            /* text field width size change */
+            align-items: center;
+            background-color: #b8c0ff;
+        }
 
         label
         {
             font-size: 1.3em;
-            /* color: goldenrod;  color of label */
+            color: black; 
+            margin-bottom: 15px;
+            text-align: center;
         }
 
-        /* Add this CSS code to your existing <style> section */
-.image-container {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.image-container img {
-    max-width: 100%;
-    height: auto;
-}
-
-.buttons-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: -33%; /* Adjust this margin as needed */
-    margin-left:-40%;
-
-}
-
-.check1 {
-    text-align: center;
-    font-size: 2em; /* Adjust the font size as needed */
-    font-weight: lighter;
-    margin-bottom: 5px; /* Adjust the spacing between the text and buttons */
-}
-
-.button2 {
-    color: black;
-    padding: 10px 10px;
-    border: none;
-    margin-top:1%;
-    font-size: 16px;
-    font-weight: bold;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-
-}
+        
 
 
 </style>
+
 </head>
 <body>
 
-<h1 class="x1">Order - Laundry Service</h1>
+<h1 class="x1">Pet Treatment Service</h1>
 <div class="container">
+    <img style="z-index:-111; width:50%; margin-left: 25%; " src="pana.png"/>
     <div class="left-side">
         <h2>Price List</h2>
         <div class="table-container">
@@ -279,7 +331,7 @@ if (isset($_POST['submit']))
                 <thead>
                     <tr>
                         <th>Service</th>
-                        <th>Price per kg</th>
+                        <th>Price per pet</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -300,10 +352,9 @@ if (isset($_POST['submit']))
     </div>
 </div>
 
-  
 
     <div class="right-side">
-        <h2>Schedule Pickup & Delivery</h2>
+        <h2>Book you Appointment</h2>
 
         <div class="forms-container">
             <form class="pick" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" novalidate>
@@ -311,7 +362,7 @@ if (isset($_POST['submit']))
                 
                 <?php
                  
-                $username = $_SESSION['username'];
+            
                  
                 $userQuery = "SELECT * FROM users WHERE username='$username'";
                 $userResult = mysqli_query($conn, $userQuery);
@@ -347,17 +398,29 @@ if (isset($_POST['submit']))
                 <input type="hidden" name="selected-item-price" id="selected-item-price" value="">
                 <input type="hidden" name="selected-total-price" id="selected-total-price" value="">
                 <label for="price">Price:</label>
-                <span id="price-display" name="prices"></span>
-                <label for="weight">Weight:</label>
-                <input type="number" name="weight" id="weight" min="1" max="10" placeholder="kg" required>
-                <label for="total-price">Total Price:</label>
-                <span id="total-price-display"></span>
+                <span style=" margin-bottom:15px; font-size:12px; text-align:center; font-weight:bold;"  id="price-display" name="prices"></span>
+
+                <label for="Number">No of Pets:</label>
+                <input type="number" name="Number" id="Number" min="1" max="10" placeholder="Number of Pets" required>
+
+
+                <label for="PetName">Name of the pet:<span id="PetName-error" style="color: red;"></span></label>
+                <input type="text" name="PetName" id="PetName"  placeholder="Pet Name" required>
+
+
+                <label for="Species">Species of the pet:<span id="PetName-error" style="color: red;"></label>
+                <input type="text" name="Species" id="Species"  placeholder="Dog / Bird /Hamster .." required>
+
+
+                <label style=" margin-bottom:15px;"for="total-price">Total Price:</label>
+                <span style=" margin-bottom:15px; font-size:12px; text-align:center; font-weight:bold;" id="total-price-display"></span>
 
                 <script>
                     // JavaScript code here
                     const services = <?php echo json_encode($serviceData); ?>;
 
-                    function populateServiceOptions() {
+                    function populateServiceOptions() 
+                    {
                         const itemSelect = document.getElementById("item");
                         itemSelect.innerHTML = "<option value=''>Select a service...</option>";
 
@@ -369,16 +432,17 @@ if (isset($_POST['submit']))
                         });
                     }
 
-                    function updatePriceAndTotal() {
+                    function updatePriceAndTotal() 
+                    {
                         const selectedItem = document.getElementById("item");
                         const priceDisplay = document.getElementById("price-display");
-                        const weight = parseFloat(document.getElementById("weight").value);
+                        const Number = parseFloat(document.getElementById("Number").value);
                         const totalPriceDisplay = document.getElementById("total-price-display");
                         const selectedService = services.find(service => service.service_price === selectedItem.value);
-
+                           // PRICE CALCULATE GARNA KO LAGI MATRAI HO 
                         if (selectedService) {
                             const pricePerUnit = parseFloat(selectedService.service_price);
-                            const totalPrice = pricePerUnit * weight;
+                            const totalPrice = pricePerUnit * Number;
 
                             priceDisplay.innerText = `Rs ${pricePerUnit.toFixed(2)}`;
                             totalPriceDisplay.innerText = `Rs ${totalPrice.toFixed(2)}`;
@@ -392,117 +456,21 @@ if (isset($_POST['submit']))
 
                     document.addEventListener("DOMContentLoaded", populateServiceOptions);
                     document.getElementById("item").addEventListener("change", updatePriceAndTotal);
-                    document.getElementById("weight").addEventListener("input", updatePriceAndTotal);
+                    document.getElementById("Number").addEventListener("input", updatePriceAndTotal);
                 </script>
-                <label for="pickup-date">Pickup Date:</label>
-                <input type="date" name="pickup-date" id="pickup-date" required>
+                <label for="pickup-date">Appointment Date:</label>
+                <input style="width:100%; height:45px; margin-bottom:15px;" type="date" name="pickup-date" id="pickup-date" required>
 
-                <label for="pickup-time">Pickup Time:</label>
-                <input type="time" name="pickup-time" id="pickup-time" required>
+                <label for="pickup-time">Appointment Time:</label>
+                <input style="width:100%; height:45px; margin-bottom:15px;" type="time" name="pickup-time" id="pickup-time" required>
 
-                <label for="delivery-date">Delivery Date:</label>
-                <input type="date" name="delivery-date" id="delivery-date" required>
 
-                <label for="delivery-time">Delivery Time:</label>
-                <input type="time" name="delivery-time" id="delivery-time" required>
-
-                <script>
-                    // JavaScript code for date and time validation
-                    const pickupDateInput = document.getElementById("pickup-date");
-                    const pickupTimeInput = document.getElementById("pickup-time");
-                    const deliveryDateInput = document.getElementById("delivery-date");
-                    const deliveryTimeInput = document.getElementById("delivery-time");
-
-                    // Get the current timestamp
-                    const currentTimestamp = Date.now();
-
-                    // Calculate the current date in YYYY-MM-DD format
-                    const currentDate = new Date(currentTimestamp).toISOString().split('T')[0];
-
-                    // Set the 'min' attribute for date inputs
-                    pickupDateInput.setAttribute("min", currentDate);
-                    deliveryDateInput.setAttribute("min", currentDate);
-
-                    // Set the 'min' and 'max' attributes for time inputs
-                    pickupTimeInput.setAttribute("min", "06:00");
-                    pickupTimeInput.setAttribute("max", "18:00");
-                    deliveryTimeInput.setAttribute("min", "06:00");
-                    deliveryTimeInput.setAttribute("max", "18:00");
-
-                    // Add an event listener to the form for form submission
-                    document.querySelector("form").addEventListener("submit", function (event) {
-                        const pickupTimestamp = new Date(pickupDateInput.value + "T" + pickupTimeInput.value).getTime();
-                        const deliveryTimestamp = new Date(deliveryDateInput.value + "T" + deliveryTimeInput.value).getTime();
-
-                        // Check if pickup date/time is in the past
-                        if (pickupTimestamp < currentTimestamp) {
-                            alert("Pickup date/time cannot be in the past.");
-                            event.preventDefault(); // Prevent form submission
-                            return;
-                        }
-
-                        // Check if delivery date/time is in the past
-                        if (deliveryTimestamp < currentTimestamp) {
-                            alert("Delivery date/time cannot be in the past.");
-                            event.preventDefault(); // Prevent form submission
-                            return;
-                        }
-
-                        // Check if delivery date/time is before pickup date/time
-                        if (deliveryTimestamp <= pickupTimestamp) {
-                            alert("Delivery date/time must be after pickup date/time.");
-                            event.preventDefault(); // Prevent form submission
-                            return;
-                        }
-
-                        // Check if pickup time is outside the allowed range (6 AM - 6 PM)
-                        const pickupTime = pickupTimeInput.value.split(":");
-                        const pickupHour = parseInt(pickupTime[0]);
-
-                        if (pickupHour < 6 || pickupHour >= 18) {
-                            alert("Pickup time must be between 6 AM and 6 PM.");
-                            event.preventDefault(); // Prevent form submission
-                            return;
-                        }
-
-                        // Check if delivery time is outside the allowed range (6 AM - 6 PM)
-                        const deliveryTime = deliveryTimeInput.value.split(":");
-                        const deliveryHour = parseInt(deliveryTime[0]);
-
-                        if (deliveryHour < 6 || deliveryHour >= 18) {
-                            alert("Delivery time must be between 6 AM and 6 PM.");
-                            event.preventDefault(); // Prevent form submission
-                            return;
-                        }
-                    });
-                </script>
                 <input type="submit" value="Confirm Schedule" name="submit">
             </form>
         </div>
     </div>
 </div>
-<!-- <div class="buttons-container">
-    <h1 class="check1">I have Subscription Plan.</h1>
-    <button class="button2">
-        <a href="subscription.php">Subscription Plan</a>
-    </button>
-</div>
-<div class="buttons-container">
-    <h1 class="check1">I want Dry Cleaning Service.</h1>
-    <button class="button2">
-        <a href="dry_.php">Dry Cleaning</a>
-    </button>
-</div> -->
-<div class="buttons-container">
-    <h1 class="check1">I have other plans.</h1>
-    <button class="button2">
-        <a href="subscription.php">Subscription Plan</a>
-    </button>
-    <button class="button2">
-        <a href="dry_cleaning.php">Dry Cleaning</a>
-    </button>
 
-</div>
 
 
 

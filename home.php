@@ -22,7 +22,7 @@ var_dump($user);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="homestyle.css">
+    <!-- <link rel="stylesheet" href="homestyle.css"> -->
     <style>
         body
         {
@@ -55,13 +55,13 @@ var_dump($user);
     margin: 10px;
     width: 300px;
     text-align: center;
-    background-color: white;
+    background-color: #443850;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
 }
 
 .dashboard-card a {
     text-decoration: none;
-    color: #333;
+    color: white;
 }
 
 .dashboard-card h3 {
@@ -72,7 +72,7 @@ var_dump($user);
 .dashboard-card p {
     margin: 10px 0;
     font-size: 16px;
-    color: #666;
+    color: white;
 }
 
   </style>
@@ -85,22 +85,22 @@ var_dump($user);
       <div class="dashboard-container">
         <div class="dashboard-card">
             <a href="myorder.php">
-                <h3>My Orders</h3>
-                <p>View your order history.</p>
+                <h3>My Appointments</h3>
+                <p>Appointment history.</p>
             </a>
         </div>
         <div class="dashboard-card">
             <a href="order.php">
-                <h3>Order</h3>
-                <p>Place a new order for laundry services.</p>
+                <h3>Book Appointment</h3>
+                <p>Place a new Appointment.</p>
             </a>
         </div>
-        <div class="dashboard-card">
+        <!-- <div class="dashboard-card">
             <a href="service-list.php">
                 <h3>Services</h3>
-                <p>Checkout available different services.</p>
+                <p>Check Available Services.</p>
             </a>
-        </div>
+        </div> -->
         <!-- You can add more dashboard cards as needed -->
     </div>
       

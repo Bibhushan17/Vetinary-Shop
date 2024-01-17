@@ -1,5 +1,5 @@
  <?php
-$conn = mysqli_connect('localhost','root','','laundry','3306');
+$conn = mysqli_connect('localhost','root','','vetinary','3306');
 
 if (!$conn) 
 {

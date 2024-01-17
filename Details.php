@@ -1,6 +1,7 @@
 <?php
 session_start();
-include  'db.php';
+include ('nav.php');
+include ('db.php');
 $userid=$_GET['Customer'];
 $sql="SELECT fullname FROM users WHERE id='$userid'";
 $result = mysqli_query($conn, $sql);
@@ -25,9 +26,15 @@ echo $username;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        td{
+            font-size:16px;
+        }
+        </style>
 </head>
 <body>
-<table>
+<div class="container" style="margin-top:200px; margin-left:400px;">
+<table border="2" style="padding:10px;">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -59,6 +66,7 @@ echo $username;
                 ?>
             </tbody>
         </table>
+</div>
 
 </body>
 </html>

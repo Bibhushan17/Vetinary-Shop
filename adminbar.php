@@ -1,95 +1,126 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin</title>
+    <title>Vetinary Service Management</title>
+    <link rel="stylesheet" href="homestyle.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            display: flex;
-            /* justify-content: center;
-            align-items: center;  */
-            background-color: #D5E6EF;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-            font-size: 10px;
-        }
-
-        /* Sidebar styles */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 10%;
-            background-color: rgb(255, 255, 255);
-            box-shadow: 3px 0 6px rgba(0, 0, 0, 0.1);
-            display: grid;
-            grid-template-rows: auto auto 1fr auto; /* Header, Logo, Content, Footer */
-            align-items: center; /* Center content vertically */
-        }
-
-        /* Logo and menu item styles */
-        .logo_small {
-          
-            display: flex;
+       
+        h1
+        {
+            margin-top: 6%;
+            text-align: center;
             align-items: center;
             justify-content: center;
-            width: auto;
-            max-width: 50%;
-            max-height: 50%;
-            height: auto;
-            margin-top: 5%;
-            margin-left: 25%;
-        }
+            font-weight: lighter;
+            font-size: 3em;
 
-        .nav-links a
-        {
-            color: black;
+        } h2 {
             text-align: center;
-            text-decoration: none;
-            font-size: 1.3em;
-        }
-        .nav-links {
-            margin-top: 2.3em;
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 2.3em; /* Gap between menu items */
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         }
+        
+        *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body
+{
+    background-color:#D5E6EF;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 10px;
+}
+a{
+    text-decoration: none;
+}
+li{
+    list-style:none;
+}
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center horizontally */
+    padding: 1%;
+    background-color: #A0AAB2;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+}
 
-        li
-        {
-            text-decoration: none;
-            list-style: none;
+.nav-links {
+    text-align: center;
+}
 
-        }
-        .nav-links li {
-            margin: 0; /* Reset margin for menu items */
-        }
+.nav-links a {
+    color: rgb(0, 0, 0);
+    margin: 5%;
+    text-decoration: none;
+    display: inline-block; /* Ensures that anchor tags behave like block-level elements */
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links li a:hover {
+    background-color: #f0eeff;
+}
+
+.menu {
+    margin-right: 2%;
+    display: flex;
+    gap: 1em;
+    font-size: 1.5em;
+}
+
+.menu a {
+    color: rgb(0, 0, 0);
+}
+
+.menu li {
+    margin: 0;
+    padding: 0;
+}
+
+.menu li a:hover {
+    background-color: #f0eeff;
+}
+
+.logo {
+    height: auto;
+    width: auto;
+    margin-left: 2%;
+}
+
+body {
+    background-color: #D5E6EF;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 10px;
+}
+
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="logo">
-            <a href="admin.php">
-                <img src="small_logo.png" class="logo_small" />
+    <nav class="navbar">
+        <!-- <div class="logo">
+            <a href="home.php">
+                <img src="logo.png" class="logo" />
             </a>
-        </div>
+        </div> -->
         <ul class="nav-links">
-            <li><a href="admin_order.php">Orders</a></li>
-            <li><a href="pickup_delivery.php">Pickup & Delivery</a></li>
-            <li><a href="admin_subscription.php">Subscription</a></li>
-            <li><a href="admin_dry_clean.php">Dry Clean</a></li>
-            <li><a href="customers.php">Customers</a></li>
-            <li><a href="admin_setting.php">Settings</a></li>
-            <li><a href="logout.php">Logout</a></li>
+            <div class="menu">
+                <li><a href="admin.php">Home</a></li>
+                <!-- <li><a style="white-space:nowrap; color:#000A65;" href="login.php">Book Appointment</a></li> -->
+                <li><a style="white-space:nowrap; color:#000A65;" href="admin_order.php">Appointments</a></li>
+                <li><a href="customers.php">Customers</a></li>
+                <li><a style="white-space:nowrap; color:#000A65;" href="admin_setting.php">Inquiries</a></li>
+                <li><a href="logout.php">Logout</a></li>
+            </div>
         </ul>
-    </div>
+    </nav>
 </body>
 </html>
-
-

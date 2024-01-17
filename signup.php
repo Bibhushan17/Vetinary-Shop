@@ -119,42 +119,37 @@ if (empty($phone)) {
    
 <style>
 .signup-card {
-  width: 300px;
-  margin: 0 auto;
+  width: 375px;
   padding: 20px;
-  background: #f1f1f1;
+  background: #FCDE9C;
   border: 1px solid #ccc;
   border-radius: 4px;
   /* transform: translate(150%,15%); */
-  transform: translate(150%,30%);
+  transform: translate(150%,-150%);
   box-shadow: 0px 0px 40px rgba(0.3, 0.3, 0.3, 0.3);
   z-index: 2;
   position: absolute;
+  margin-top:15%;
 }
 
 .container
 {
     position: relative;
-    height: 100vh;
+    height: 145vh;
     overflow: auto;
 
 }
 
-.container .imgXX
+.imgXX
 {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 60%;
-    width: auto;
-    max-height: 90%;
-    align-items: center;
-    z-index: -1;
-    opacity: 90%;
+  width: 100%;
 }
 h2 {
   text-align: center;
   margin-bottom: 20px;
+  font-weight: lighter;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
 }
 
 form label {
@@ -172,13 +167,18 @@ form input {
 
 button[type="submit"]
 {
-  width: 100%;
+  width: 50%;
   padding: 10px;
-  background: #4caf50;
+  background: #283618;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 4px;
+  margin-left: 25%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  margin-top:10px;
 }
 .error
 {
@@ -193,66 +193,17 @@ button[type="submit"]
     width: 80%;
   }
 }
-
-
-// best seen at 1500px or less
-
-html, body { height: 100%; }
-body {
-  background:radial-gradient(ellipse at center, rgba(255,254,234,1) 0%, rgba(255,254,234,1) 35%, #B7E8EB 100%);
-  overflow: hidden;
+label
+{
+  font-size:14px;
 }
-
-.ocean { 
-  height: 5%;
-  width:100%;
-  position:absolute;
-  bottom:0;
-  left:0;
-  background: #015871;
-}
-
-.wave {
-  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg) repeat-x; 
-  position: absolute;
-  top: -198px;
-  width: 6400px;
-  height: 198px;
-  animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite;
-  transform: translate3d(0, 0, 0);
-}
-
-.wave:nth-of-type(2) {
-  top: -175px;
-  animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) -.125s infinite, swell 7s ease -1.25s infinite;
-  opacity: 1;
-}
-
-@keyframes wave {
-  0% {
-    margin-left: 0;
-  }
-  100% {
-    margin-left: -1600px;
-  }
-}
-
-@keyframes swell {
-  0%, 100% {
-    transform: translate3d(0,-25px,0);
-  }
-  50% {
-    transform: translate3d(0,5px,0);
-  }
-}
-
 </style>
 </head>
 </head>
 <body>
 
     <div class="container">
-        <img src="signuup_bgremoved.png" alt="image" class="imgXX">
+        <img src="pets11.jpg" alt="image" class="imgXX">
         <div class="signup-card">
             <h2>Signup Form</h2>
           
@@ -300,15 +251,11 @@ body {
             </form>
         </div>
     </div>
-    <div class="ocean">
-  <div class="wave"></div>
-  <div class="wave"></div>
+   
 </div>
 
 </body>
 </html>
 
-
-
-
-
+<?php
+include 'footer.php';

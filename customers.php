@@ -38,9 +38,10 @@ $result = mysqli_query($conn, $sql);
         }
 
         .container .guff h1 {
-            margin-top: 5%;
+            margin-top: 7%;
             font-size: 4em;
             font-weight: lighter;
+            margin-left: -2%;
         }
 
         .top_header h1 {
@@ -63,10 +64,12 @@ $result = mysqli_query($conn, $sql);
           
           border-collapse: collapse;
           text-align: center;
-          margin-top: 2%;
+          margin-top: 5%;
           border-spacing: 5px;
           box-shadow: 3px 3px 3px rgb(0,0,0,0.3);
-          /* margin-left:-9%; */
+          margin-left:1%;
+          width: 100%;
+          padding: 10px;
         }
         th
         {
@@ -105,6 +108,7 @@ tr
     /* gap:1em; */
     margin-bottom:10px;
     white-space: nowrap;
+    padding: 20px;
 
     /* margin:3%; */
   }
@@ -114,7 +118,8 @@ tr
     white-space: nowrap;
     text-align: center;
     /* background-color: #e6f5ff; */
-    background-color: #FFEAEE;
+    background-color: #183A37;
+    color: white;
     margin-bottom:5px;
     box-shadow: 3px 3px 3px rgb(0,0,0,0.3);
   }
@@ -124,16 +129,28 @@ tr
     /* background-color: #FFEAEE; */
     color:black;
   }
-
+.btn
+{
+    text-decoration: none;
+    color: white;
+}
 
 
 
   tr:nth-child(even) td {
-            background-color: #f2f2f2; /* Background color for even rows */
+            background-color:#04151F; /* Background color for even rows */
+            color: white;
+            padding: 10px;
+            font-size: 14px;
         }
 
         tr:nth-child(odd) td {
-            background-color: #ffffff; /* Background color for odd rows */
+            background-color: #04151F; /* Background color for odd rows */
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+
+
         }
        
     </style>
@@ -145,14 +162,9 @@ tr
     <div class="container">
         <div class="guff" >
         <!-- Your page content goes here -->
-        <h1>Welcome to the Admin Panel</h1>
-        <p>This is your overall view of content.</p>
-        <hr class="line">
+        <h1>Customer Data</h1>
         </div>
-        <div class="top_header">
-            <h1>Customer Data</h1>
-            <hr class="line1">
-        </div>
+        
         <!-- Customer List -->
         <table>
             <thead>
@@ -163,7 +175,7 @@ tr
                     <th>Phone</th>
                     <th>Address</th>
                     <th>Actions</th>
-                    <th>Details</th>
+                    <!-- <th>Details</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -180,9 +192,7 @@ tr
                             <td>
                                 <a href="?remove_customer=<?php echo $row['id']; ?>" class="btn">Remove</a>
                             </td>
-                            <td>
-                                <a href="Details.php?Customer=<?php echo $row['id']; ?>" class="btn">Details</a>
-                            </td>
+                            
                         </tr>
                 <?php
                     }

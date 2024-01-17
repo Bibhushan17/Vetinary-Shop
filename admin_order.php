@@ -13,23 +13,42 @@ if(!isset($_SESSION['loggedin'])|| $_SESSION['loggedin']!==true)
 //     header("Location:loginpage.html");
 //    }
 include  'db.php';
-$sql = "SELECT * FROM order_new";
+$sql = "SELECT * FROM appointments";
 $result = $conn -> query ($sql);
-if(isset($_POST['update_update_btn'])){
+
+ 
+if (isset($_POST['update_update_btn'])) {
     $update_value = $_POST['update_status'];
     $update_id = $_POST['update_id'];
-    $update_quantity_query = mysqli_query($conn, "UPDATE `order_new` SET status = '$update_value' WHERE id = '$update_id'");
-    if($update_quantity_query){
-       header('location:admin_order.php');
-      
-    };
-  };
-  
-  if(isset($_GET['remove'])){
-    $remove_id = $_GET['remove'];
-    mysqli_query($conn, "DELETE FROM `order_new` WHERE id = '$remove_id'");
+
+    if ($update_value === 'Remove') {
+        // Remove the order from the database
+        $delete_query = mysqli_query($conn, "DELETE FROM `appointments` WHERE id = '$update_id'");
+        if ($delete_query) {
+            // Order successfully removed
+            echo "<script>alert('Order successfully removed.');</script>";
+        } else {
+            // Error removing order
+            echo "<script>alert('Error: " . mysqli_error($conn) . "');</script>";
+        }
+    } else {
+        // Update the status for other cases
+        $update_quantity_query = mysqli_query($conn, "UPDATE `appointments` SET status = '$update_value' WHERE id = '$update_id'");
+        if ($update_quantity_query) {
+            // Status successfully updated
+            echo "<script>alert('Status updated successfully.');</script>";
+        } else {
+            // Error updating status
+            echo "<script>alert('Error: " . mysqli_error($conn) . "');</script>";
+        }
+    }
+
     header('location:admin_order.php');
-  };
+}
+
+
+?>
+
   
 ?>
 
@@ -42,22 +61,15 @@ if(isset($_POST['update_update_btn'])){
     <style>
           body
         {
-            margin-left: 12%;
-            margin-top: 1%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            overflow-y: scroll;
         }
-        .line
-        {
-            height: 1px;
-            max-width: 900px;
-            color: grey;
-            opacity: 20%;
-            margin-top: 0.5%;
-            
-
-        }
+       
         .guff
         {
-          /* margin-left:10%; */
+          margin-left:10%;
           margin-bottom: 5%;
 
         }
@@ -70,12 +82,12 @@ if(isset($_POST['update_update_btn'])){
         .container
         {
           /* margin-top:5%; */
-          margin-left: -38%;
+          /* margin-left: -15%; */
           
         }
          .heed
         {
-          margin-top:10%;
+          margin-top:5%;
           /* margin-left: -9%; */
         }
         table
@@ -86,7 +98,7 @@ if(isset($_POST['update_update_btn'])){
           margin-top: 2%;
           border-spacing: 5px;
           box-shadow: 3px 3px 3px rgb(0,0,0,0.3);
-          /* margin-left:-11%; */
+          margin-left:15%;
         }
         th,td
         {
@@ -116,17 +128,19 @@ tr
     justify-content:center;
     /* gap:1em; */
     margin-bottom:10px;
-    white-space: nowrap;
+    /* white-space: nowrap; */
 
     /* margin:3%; */
   }
   th
   {
-    padding:10px 15px;
+    padding:15px;
     white-space: nowrap;
     text-align: center;
-    /* background-color: #e6f5ff; */
-        background-color: #FFEAEE;
+    font-weight: lighter;
+
+    background-color: #EFCB68;
+        /* background-color: #FFEAEE; */
     margin-bottom:5px;
     box-shadow: 3px 3px 3px rgb(0,0,0,0.3);
 
@@ -142,11 +156,14 @@ tr
     
   }
   tr:nth-child(even) td {
-            background-color: #f2f2f2; /* Background color for even rows */
+            background-color:#314154; /* Background color for even rows */
+            color:white; /* Background color for odd rows */
+
         }
 
         tr:nth-child(odd) td {
-            background-color: #ffffff; /* Background color for odd rows */
+            background-color:#314154;
+            color:white; /* Background color for odd rows */
         }
         .empty
         {
@@ -182,28 +199,25 @@ tr
 <body>
 <div class="guff" >
         <!-- Your page content goes here -->
-        <h1>Welcome to the Admin Panel</h1>
-        <p>This is your overall view of content.</p>
-        <hr class="line">
+        <!-- <h1>Welcome Admin!</h1> -->
     </div>
 <div class="container">
-  <h1 class = "heed" >Order Status</h1>
+  <h1 class = "heed" >Appointments Status</h1>
 <table class="table">
   <thead>
     <tr>
-    <th scope="col">S.N</th>
+    <th scope="col">I.D.</th>
       <th scope="col">Name</th>
       <th scope="col">Address</th>
       <th scope="col">Phone</th>
-      <th scope="col">Selected item</th>
-      <th scope="col"> Weight</th>
+      <th scope="col">Service</th>
+      <th scope="col"> No of Pets</th>
+      <th scope="col"> Species Name</th>
+      <th scope="col"> Appointment Date</th>
+      <th scope="col"> Appointment Time</th>
       <th scope="col">Total Price</th>
-      <th scope="col">Pickup Date</th>
-      <th scope="col">Pickup Time</th>
-      <th scope="col"> Delivery  Date</th>
-      <th scope="col"> Deliver Time</th>
-      <th scope="col">Status</th>
       <th scope="col">Action</th>
+      <th scope="col">Status</th>
     </tr>
   </thead>
   <tbody>
@@ -223,17 +237,13 @@ tr
                 <td><?php echo $row["Name"] ?></td>
                 <td><?php echo $row["Address"] ?></td>
                 <td><?php echo $row["Phone"] ?></td>
-                <td><?php if( $row["SelectedItem"]==120){
-                          echo "Wash and Fold";
-                          } elseif($row["SelectedItem"]==250){ echo "express Laundry";}
-                          else { echo "Wash and Iron ";}
-                 ?></td>
-                <td><?php echo $row["Weight"] ?></td>
-                <td><?php echo $row["TotalPrice"] ?></td>
+                <td><?php echo $row["SelectedItem"]?></td>
+                <td><?php echo $row["Number"] ?></td>
+                <td><?php echo $row["Species"] ?></td>
                 <td><?php echo $row["PickupDate"] ?></td>
                 <td><?php echo $row["PickupTime"] ?></td>
-                <td><?php echo $row["DeliveryDate"] ?></td>
-                <td><?php echo $row["DeliveryTime"] ?></td>
+                <td><?php echo $row["TotalPrice"] ?></td>
+                
                 <td><form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                     <input type="hidden" name="update_id"  value="<?php echo  $row['id']; ?>" >
                     <div>
@@ -243,6 +253,8 @@ tr
                                                 <option value="Confirmed">Confirmed</option>
                                             <option value="Cancel">Cancel</option>
                                             <option value="Delivered">Delivered</option>
+                                            <option value="Remove" data-remove-id="<?php echo $row['id']; ?>">Remove</option>
+
                                             </select>
                                         </div>
                     <input type="submit" value="update" src="ok.png" name="update_update_btn">
@@ -251,9 +263,7 @@ tr
                     <!-- <input type="image" img style="width:25px; height:25px;"  src="update.png" name="update_update_btn"> -->
 
                 </form></td>
-                <!-- <td><a href="admin_order.php?remove=<?php echo $row['id']; ?>"><img style="width:25px; height:25px;"  src="del.png"/></a></td> -->
-                <td><a href="javascript:void(0);" onclick="confirmDelete(<?php echo $row['id']; ?>)"><img style="width:25px; height:25px;"  src="del.png"/></a></td>
-
+                <td><?php echo $row["Status"] ?></td>
 
                 </tr>
                 <?php 
@@ -267,12 +277,27 @@ tr
 </table>
 </div>
 
+<!-- Add this script to the end of your HTML body -->
 <script>
-function confirmDelete(id) {
-    if (confirm("Are you sure you want to delete this item?")) {
-        window.location.href = "admin_order.php?remove=" + id;
-    }
-}
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     document.querySelector('select[name="update_status"]').addEventListener('change', function() {
+    //         var selectedValue = this.value;
+
+    //         if (selectedValue === 'Remove') {
+    //             // Ask for confirmation before removing
+    //             var confirmRemove = confirm('Are you sure you want to remove this order?');
+
+    //             if (confirmRemove) {
+    //                 // Get the form element and submit it
+    //                 var form = this.closest('form');
+    //                 form.submit();
+    //             } else {
+    //                 // Reset the dropdown to the original status
+    //                 this.value = ''; // or select another appropriate option
+    //             }
+    //         }
+    //     });
+    // });
 </script>
 
 </body>

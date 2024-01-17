@@ -9,9 +9,9 @@ include("db.php");
    }
   
   
-     $username =$_SESSION['username'];
-     echo $username;
-     $query = "SELECT * FROM order_new WHERE Name='$username'";
+     $username =$_SESSION['user'];
+    //  echo $username;
+     $query = "SELECT * FROM appointments WHERE Name='$username'";
      $result = mysqli_query($conn, $query);
 
 
@@ -29,17 +29,17 @@ include("db.php");
         }
      
         h1 {
-            margin: 2%;
+            /* margin: 2%; */
             font-size: 3em;
         }
         .container
         {
-            margin: 0%;
+            /* margin-top: -5%; */
             /* top: 12%; */
             width: 50%;
             text-align: center;
-            border: 1px solid #ddd;
-            background-color: #f2f2f2;
+            /* border: 1px solid #ddd; */
+            background-color: #EFF6E9;
             transform: translate(50%,25%);
             box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
           
@@ -51,7 +51,7 @@ include("db.php");
             margin: 2%;
             padding: 3%;
             color: black;
-            border: 1px solid black;
+            /* border: 1px solid black; */
             text-align: center;
             justify-content: center;
             align-items: center;
@@ -61,25 +61,33 @@ include("db.php");
     
         table tr 
         {
-            margin: 2%;
-            padding: 2%;
+            /* margin: 2%; */
+            padding: 17px;
+            margin-top: 20px;
+            margin-bottom: 15px;
             justify-content: space-between;
-            font-size: 16px;
+            font-size: 17px;
+            background-color: #01161E;
+            color: white;
 
         
         }
         table td
         {
             align-items: center;
-            padding: 2%;
-            margin: 2%;
+            padding: 10px;
+            margin: 10px;
+            margin-top: 10px;
+            font-size: 14px;
         }
         tr:nth-child(even) td {
             background-color: #f2f2f2;
+            color:black;
         }
 
         tr:nth-child(odd) td {
             background-color: #ffffff; /* Background color for odd rows */
+            color: black;
         }
 
 
@@ -88,15 +96,24 @@ include("db.php");
 
 <body>
     <div class="container">
-        <h1> My Order </h1>
+        <h1 style="margin-top:5%; background-color:#BEE9E8; width:100%; padding:5px;"> My Appointment History </h1>
         <table class="table">
            <thead>
                     <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Pickup Date</th>
-                        <th scope="col">Delivery Date</th>
+                        <th style="font-size: 20px; font-weight:lighter; padding:10px;"scope="col">Name</th>
+                        <th style="font-size: 20px; font-weight:lighter; padding:10px;" scope="col">Address</th>
+                        <th style="font-size: 20px; font-weight:lighter; padding:10px;" scope="col">Phone</th>
+                        <th style="font-size: 20px; font-weight:lighter; padding:10px;" scope="col"> Pet Species</th>
+                        <th style="font-size: 20px; font-weight:lighter; padding:10px;" scope="col">Pet Name</th>
+                        <th style="font-size: 20px; font-weight:lighter; padding:10px;" scope="col">Appointment Date</th>
+                        <th style="font-size: 20px; font-weight:lighter; padding:10px;" scope="col">Appointment Time</th>
+                        <th style="font-size: 20px; font-weight:lighter; padding:10px;" scope="col"> Service</th>
+                        <th style="font-size: 20px; font-weight:lighter; padding:10px;" scope="col"> Price</th>
+
+
+                        
+                        
+
                     </tr>
             </thead>
          <?php
@@ -111,8 +128,16 @@ include("db.php");
                         <td><?php   echo $row['Name'];    ?></td>
                         <td><?php   echo $row['Address'];    ?></td>
                         <td><?php   echo $row['Phone'];    ?></td>
+                        <td><?php   echo $row['Species'];    ?></td>
+                        <td><?php   echo $row['PetName'];    ?></td>
                         <td><?php   echo $row['PickupDate'];    ?></td>
-                        <td><?php   echo $row['DeliveryDate'];    ?></td>
+                        <td><?php   echo $row['PickupTime'];    ?></td>
+                        <td><?php   echo $row['SelectedItem'];    ?></td>
+                        <td><?php   echo $row['TotalPrice'];    ?></td>
+
+
+
+
                 </tr>
  <?php 
                                            

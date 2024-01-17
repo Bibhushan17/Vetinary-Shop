@@ -86,10 +86,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .container {
             max-width: 800px;
-            margin: 20px auto;
+            /* margin: 20px auto; */
             padding: 20px;
             background-color: white;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 7%;
+            margin-left: 23%;
         }
 
         .profile-info {
@@ -97,19 +99,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .profile-info p {
-            font-size: 1.5em;
-            color: #333;
-            margin: 5px 0;
+            font-size: 3em;
+            /* color: #333; */
+            /* margin: 5px 0; */
         }
 
         /* Increase font size of label */
         label {
-            font-size: 1.2em;
+            font-size: 2.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            line-height: 1em;
+            white-space: nowrap;
+            /* background-color: #EAF0CE; */
+            /* padding: 5px; */
+
         }
 
         /* Display value of label just after label */
         p {
             display: inline-block;
+            /* background-color: #EAF0CE; */
+            padding: 10px;
+
+
         }
 
         .formX {
@@ -157,36 +170,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container">
         <div class="profile-info">
-            <h1>User Profile Settings</h1>
+            <h1>User Profile</h1>
             <form method="POST" enctype="multipart/form-data">
                 <label>Fullname:</label>
-                <p style="color: black; font-size: 1.5em;"><?php echo $userData['fullname']; ?></p>
+                <p style="color: black; font-size: 2em;"><?php echo $userData['fullname']; ?></p><br>
                 <label>Username:</label>
-                <p style="color: black; font-size: 1.5em;"><?php echo $userData['username']; ?></p>
+                <p style="color: black; font-size: 2em;"><?php echo $userData['username']; ?></p><br>
                 <label>Email:</label>
-                <p style="color: black; font-size: 1.5em;"><?php echo $userData['email']; ?></p>
+                <p style="color: black; font-size: 2em;"><?php echo $userData['email']; ?></p><br>
                 <label>Address:</label>
-                <p style="color: black; font-size: 1.5em;"><?php echo $userData['address']; ?></p>
+                <p style="color: black; font-size: 2em;"><?php echo $userData['address']; ?></p><br>
                 <label>Phone Number:</label>
-                <p style="color: black; font-size: 1.5em;"><?php echo $userData['phone']; ?></p>
+                <p style="color: black; font-size: 2em;"><?php echo $userData['phone']; ?></p><br>
             </form>
-            <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+            <!-- <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                 <label for="updatepassword">Change Password:</label>
                 <input type="Password" name="updatepassword" required>
                 <input type="Submit" name="submitupdate" value="Update">
-            </form>
+            </form> -->
         </div>
-        <div class="formX">
-            <form class="formX" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-                <h2>Contact Us</h2>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email address." required><br>
-                <label for="feedback">Feedback:</label>
-                <textarea id="feedback" name="feedback" placeholder="Enter your feedback or any queries." required></textarea>
-                <button type="submit" name="sendemail">Send</button><br><br>
-                <p>Call us at: +977-9842245984</p>
-            </form>
-        </div>
+        
     </div>
 </body>
 </html>

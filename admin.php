@@ -5,6 +5,8 @@ include 'db.php';
 $_SESSION['username'] = "admin";
 $user = $_SESSION['username'];
 $Numofrows = $Numofrows2 = "";
+$todaydate=date("Y-m-d");
+
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: login.php");
@@ -14,9 +16,17 @@ $sql1 = "SELECT * FROM users";
 $result = mysqli_query($conn, $sql1);
 $Numofrows = mysqli_num_rows($result);
 
-$sql2 = "SELECT * FROM order_new";
+$sql2 = "SELECT * FROM appointments";
 $result2 = mysqli_query($conn, $sql2);
 $Numofrows2 = mysqli_num_rows($result2);
+
+$sql3= "SELECT * FROM appointments WHERE PickupDate='$todaydate'";
+$result3 = mysqli_query($conn, $sql3);
+$Numofrows3 = mysqli_num_rows($result3);
+
+$sql4= "SELECT * FROM appointments WHERE Status='Pending'";
+$result4 = mysqli_query($conn, $sql4);
+$Numofrows4 = mysqli_num_rows($result4);
 ?>
 
 <!DOCTYPE html>
@@ -29,8 +39,8 @@ $Numofrows2 = mysqli_num_rows($result2);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <style>
         body {
-            margin-left: 12%;
-            margin-top: 1%;
+            margin: 0;
+            padding: 0;
         }
 
         .line {
@@ -56,24 +66,25 @@ $Numofrows2 = mysqli_num_rows($result2);
             margin: 10px;
             width: 300px;
             text-align: center;
-            background-color: white;
+            background-color:#443850;
             box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
         }
 
         .dashboard-card a {
             text-decoration: none;
-            color: #333;
+            color: white;
         }
 
         .dashboard-card h3 {
             margin: 0;
-            font-size: 24px;
+            font-size: 20px;
+            font-weight: lighter;
         }
 
         .dashboard-card p {
             margin: 10px 0;
             font-size: 16px;
-            color: #666;
+            color: white;
         }
 
         .guff h1 {
@@ -98,145 +109,55 @@ $Numofrows2 = mysqli_num_rows($result2);
             background-color: white;
             box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
         }
-        
-        .filter-btn {
-            cursor: pointer;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            margin: 5px;
-            background-color: #007BFF;
-            color: white;
-
+        .guff
+        {
+            margin-left: -1%;
         }
+        .dashboard-container
+        {
+            margin-left: 1.5%;
+        }
+  
     </style>
 </head>
 
 <body>
     <div class="guff">
         <!-- Your page content goes here -->
-        <h1>Welcome to the Admin Panel</h1>
-        <p>This is your overall view of content.</p>
-        <hr class="line">
+        <h1>Welcome Admin!</h1>
+        
     </div>
-
-    <div class="dashboard-container">
+<div class="dash-container">
+<div class="dashboard-container">
         <div class="dashboard-card">
             <a href="customers.php">
-                <h3>Users</h3>
+                <h3>Total Users</h3>
                 <p><?php echo $Numofrows; ?></p>
             </a>
         </div>
         <div class="dashboard-card">
             <a href="admin_order.php">
-                <h3>Total orders</h3>
+                <h3>Total Appointments</h3>
                 <p><?php echo $Numofrows2; ?></p>
             </a>
         </div>
         <div class="dashboard-card">
             <a href="order_today.php">
-                <h3>Orders Today</h3>
-                <p><?php echo $Numofrows2; ?></p>
+                <h3>Appointments Today</h3>
+                <p><?php echo $Numofrows3; ?></p>
             </a>
         </div>
         <div class="dashboard-card">
-            <a href="order_pending.php">
-                <h3>Orders Pending</h3>
-                <p><?php echo $Numofrows2; ?></p>
+            <a href="">
+                <h3>Appointments Pending</h3>
+                <p><?php echo $Numofrows4; ?></p>
             </a>
         </div>
     </div>
-    <div class="container2">
 
-        <div class="dashboard-card1">
-            <h3 style="font-size:20px; font-weight:bolder; text-align:center; margin-bottom:10px;">Income Chart</h3>
-            <canvas id="incomeChart" width="1000" height="500"></canvas>
-        </div>
-        <div>
-            <button class="filter-btn" id="weekButton">Week</button>
-            <button class="filter-btn" id="monthButton">Month</button>
-            <button class="filter-btn" id="yearButton">Year</button>
-        </div>
-    </div>
+</div>
+  
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var ctx = document.getElementById("incomeChart").getContext("2d");
-            var incomeChart;
-
-            function createLineChart(data) {
-                return new Chart(ctx, {
-                    type: "line",
-                    data: {
-                        labels: data.labels,
-                        datasets: [
-                            {
-                                label: "General Wash Income",
-                                data: data.orderNewIncome,
-                                borderColor: "red",
-                                fill: false,
-                            },
-                            {
-                                label: "Dry Cleaning Income",
-                                data: data.dryCleaningIncome,
-                                borderColor: "blue",
-                                fill: false,
-                            },
-                        ],
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            x: {
-                                type: 'time',
-                                time: {
-                                    unit: 'day'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Income'
-                                }
-                            }
-                        },
-                    },
-                });
-            }
-
-            function updateChart(timeFrame) {
-                fetch("fetch_income_data.php?timeFrame=" + timeFrame)
-                    .then(function (response) {
-                        return response.json();
-                    })
-                    .then(function (data) {
-                        if (incomeChart) {
-                            incomeChart.destroy();
-                        }
-                        incomeChart = createLineChart(data);
-                    });
-            }
-
-            document.getElementById("weekButton").addEventListener("click", function () {
-                updateChart("week");
-            });
-
-            document.getElementById("monthButton").addEventListener("click", function () {
-                updateChart("month");
-            });
-
-            document.getElementById("yearButton").addEventListener("click", function () {
-                updateChart("year");
-            });
-
-            // Initial chart creation
-            updateChart("week");
-        });
-    </script>
-    <!-- to do -->
-    <!-- chart ma year ma 12 months nai show garne ani each month ko total income dekhayne.  -->
-    <!-- chart ma monthly ma chain each month ma all possible week dekhaune ani every week ma bhako kamai dekhaune -->
-    <!-- week ma chai each day in a week ko income dekhaune.  -->
 </body>
 
 </html>

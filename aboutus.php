@@ -1,115 +1,190 @@
+<?php
+include 'nav copy.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        .text1
+        {
+            margin-top: -50%;
+            font-size: 20px;
+            width: 70%;
+            text-align: center;
+            margin-left: 15%;
+            line-height: 3.3vh;
+        }
+        .service1
+        {
+            margin-top: 40%;
+            margin-bottom: 3%;
+            font-size: 30px;
+            text-align: center;
+            margin-left: 1%;
+            font-weight: 500;
+        }
+        .terms
+        {
+            margin-top: 5%;
+            font-size: 14px;
+            text-align: left;
+            margin-left: 9%;
+            font-weight: 400;
+            width: 80%;
+            /* white-space: nowrap; */
+            /* background-color: #373737; */
+            
+        }
+
+        </style>
+   
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">
-        <img src="logo.png" class="logo" />
-        </div>
-        <ul class="nav-links">
-            
-            <div class="menu">
-                <li> <a href="index.php">Home</a></li>
-                <li> <a href="services.php">Services</a></li>
-                <li><a href="aboutus.php">About</a></li>
-                <li><a href="contact.php">Contact</a></li>
-                <li><a href="login.php">Login</a></li>
-                <li class="signup"><a href="signup.php">Sign Up</a></li>
-            </div>
-        </ul>  
-    </nav>
+   
     <div>
         <div class="example">
-            <img  src="unsplash_cue0DuZ8cUU.png"/>
+            <img  src="vet44.jpg" alt ="kukur haruko photo"/>
+            <p class="text1"> <b>About Us</b><br><br>
+            Sangam Veterinary is the Nepal’s leading representative body for veterinary professionals working in leadership and management roles. 
+            A not-for-profit organization, we work in collaboration with other prominent veterinary bodies to encourage and support the 
+            professional and personal development of those in the veterinary profession through CPD, networking, 
+            certified management accreditation and the provision of educational resources.
+            </p>
+            <br><Br><br><br>
           </div>
         
-        <p class="about" style="text-align:justify;">
-            Quick Clean Laundry is a leading laundry service provider based in Kathmandu, Nepal. Our mission is to offer our customers high-quality, clean, and affordable laundry solutions.
-            We were inspired to start this business by our own personal experiences of struggling to find reliable laundry services in the city. As a result, we decided to create a solution 
-            that would make people's lives easier and less stressful. Our services are priced affordably and we ensure a quick turnaround time. At Quick Clean Laundry, we are dedicated to
-            providing top-notch laundry services that meet the needs of our customers.
-        </p>
-        <p class = "service1">Service Terms & Condition</p>
+          <p class = "service1">Service Terms & Condition</p>
         <div class="terms">
             <ul>
                 <li>
-                    Customers are responsible for determining whether an item requires dry cleaning or can be washed in the laundry.
-                </li>
+                Appointment Scheduling: Users of the veterinary appointment system agree to use the platform exclusively for booking appointments with veterinarians for legitimate and lawful purposes.
+                </li><br>
                 <li>
-                    Quick Clean Laundry cannot be held responsible for damage or discoloration that may occur during the laundering process or for the removal of strong stains.
-                </li>
+                Accuracy of Information: Users are responsible for providing accurate and up-to-date information when scheduling appointments. Any errors in information provided may lead to appointment rescheduling or cancellation.
+                </li><br>
                 <li>
-                    Branded or valuable items should be washed with caution, and customers should decide whether to have them washed with Quick Clean Laundry or taken to a dry cleaner.
-                </li>
+                Cancellation and Rescheduling: Users should adhere to the specified cancellation and rescheduling policies of the veterinary clinic, which may include advance notice requirements and associated fees.
+                </li><br>
                 <li>
-                    Quick Clean Laundry guarantees the use of clean and safe water, the best available detergent, and hygienic laundry services.
-                </li>
+                Privacy and Data Security: The veterinary appointment system respects user privacy and follows applicable data protection laws. User data will only be used for appointment-related communication and will not be shared with third parties without consent
+                </li><br>
                 <li>
-                    In the event of any loss of items, Quick Clean Laundry will cover 50% of the current market price of general items (excluding branded items), which may take up to 3-4 weeks to settle.
-                </li>
+                Emergency Situations: In cases of emergencies or severe medical conditions, users should contact the veterinary clinic directly and not rely solely on the online appointment system.
+                </li><br>
                 <li>
-                    Quick Clean Laundry covers mechanical damage caused by their machinery, but normal wear and tear is not covered.
-                </li>
+                Payment and Fees: Users are responsible for any applicable fees, which may include consultation fees and charges for additional services. Payment policies will be provided by the veterinary clinic.
+                </li><br>
                 <li>
-                    Customers can contact Quick Clean Laundry at info@quickcleanlaundry.com or by phone for complaints or further information.
-                </li>
+                Liability: The veterinary clinic, its staff, and the developers of the appointment system are not liable for any damages, losses, or injuries incurred during or as a result of appointments scheduled through the system.
+                </li><br>
             </ul>
         </div>
+        
         <div class="footer">
-                <div class="map">
-                        <!-- Replace the "YOUR_GOOGLE_MAPS_API_KEY" text with your own Google Maps API key -->
-                         <iframe src="https://www.google.com/maps?q=27.694424926326036,85.32943775385198&z=15&output=embed" 
-                             width="300px" height="350" frameborder="0" style="border:0;" allowfullscreen="" loading="lazy">
-                        </iframe>
-                </div>
-                <h3>Some has to take care of your clothes. And we do it for you.</h3>
-        </div> 
+            <ul class="l1">
+                <li style ="white-space:nowrap; font-size:20px;">Contact Us</li>
+                <li><i class="fas fa-phone-alt"></i>Phone: 448706</li>
+                <li><i class="far fa-envelope"></i>Email: SangamVet@gmail.com</li>
+                <li><i class="fas fa-map-marker-alt"></i>Address: Golmadhi,Bhaktapur</li>
+            </ul>
+
+            <div class="map">
+             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.448488564047!2d85.43071207504957!3d27.672530127026967!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1aadc2110825%3A0xeeee00f2eefb6b72!2sSangam%20Veterinary%20Concern!5e0!3m2!1sen!2snp!4v1694272955904!5m2!1sen!2snp" width="700" height="200" style="border:0; margin-left:510px; margin-top:35px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            
+            <p class="copyright">&copy; Privacy Policy | Accessibility | © Copyright 2023 - Sangam Veterinary Clinic. </p>
+        </div>
+<script>
+    window.addEventListener('scroll', function() {
+        var footer = document.querySelector('.footer');
+        var scrollY = window.scrollY || window.pageYOffset;
+        var pageHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+        var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+        if (scrollY + viewportHeight >= pageHeight - 10) {
+            footer.style.opacity = '1';
+        } else {
+            footer.style.opacity = '0';
+        }
+    });
+</script>
+        
       
         
     </div>
 
     <style>
-        .footer
+        body
         {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            height: 50vh;
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+            overflow-y: scroll;
+        }
+        img
+        {
+            width: 100%;
+        }
 
-        }
-        .footer iframe
-        {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70%; /* Adjust the width as desired */
-            height: 70%
-        }
-        .footer h3
+
+        .footer 
             {
-                font-size: 24px; /* Adjust the font size as desired */
-                color: rgb(66, 0, 0);
-                position: absolute;
-                top: 100%; /* Adjust the spacing between the form and text */
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 2;
+                margin-top:60px;
+                background-color: #381D2A;
+                color:  #BA5624;
                 text-align: center;
+                align-items: left;
+                padding: 0px 0;
+                
                 width: 100%;
-                font-family: 'jokerman','arial','calibri';
-                font-size: 2rem;
-                margin: 1%;
-                padding: 1%;
+                /* opacity: 0;  */
+                /* transition: opacity 0.3s ease;  */
+                display: flex;
+                justify-content: left;
+                height: 340px; 
             }
-        
+
+
+.copyright {
+    font-size: 16px;
+    margin-left: -65%;
+    margin-top: 21%;
+    white-space: nowrap;
+    /* position:fixed; */
+}
+.l1 ul li
+{
+    text-align: left;
+    font-size: 20px;
+    align-items:left;
+    
+}
+.l1
+{
+    /* transform: translate(0%,5%); */
+    margin-top: 0%;
+}
+
+.l1 li
+{
+    font-size: 16px;
+    margin-left: 100%;
+    margin-top: 10%;
+    font-weight: lighter;
+    color:white;
+    align-items: left;
+    text-align: left;
+
+}
+
+     
     </style>
 </body>
 </html>
+
